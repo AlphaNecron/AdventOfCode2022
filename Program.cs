@@ -2,4 +2,4 @@
 
 var txt = File.ReadAllText("/data/Dev/AdventOfCode2022/AdventOfCode2022/INPUT").Trim('\n');
 
-Day5.Solve(txt);
+Day6.Solve(txt);
