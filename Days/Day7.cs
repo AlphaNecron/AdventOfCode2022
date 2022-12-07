@@ -24,9 +24,16 @@ public class Day7
                     break;
                 case "ls":
                 {
-                    var output = lines.Skip(i + 1).TakeWhile(f => !f.StartsWith('$'));
-                    var sizes = output.Where(f => f.Split(' ').First().All(char.IsDigit))
-                        .Sum(f => int.Parse(f.Split(' ').First()));
+                    var output = lines
+                        .Skip(i + 1)
+                        .TakeWhile(f => !f.StartsWith('$'));
+                    var sizes = output
+                        .Select(f => f
+                            .Split(' ')
+                            .First())
+                        .Where(f => f
+                            .All(char.IsDigit))
+                        .Sum(int.Parse);
                     paths.TryAdd(path, sizes);
                     break;
                 }
@@ -34,14 +41,19 @@ public class Day7
         }
 
         foreach (var p1 in paths)
-        foreach (var p2 in paths.Where(p2 => p1.Key != p2.Key).Where(p2 => p2.Key.StartsWith(p1.Key)))
+        foreach (var p2 in paths
+                     .Where(p2 => p1.Key != p2.Key)
+                     .Where(p2 => p2.Key.StartsWith(p1.Key)))
             paths[p1.Key] += p2.Value;
         // part 1 result
-        Console.WriteLine(paths.Where(f => f.Value <= 100_000).Sum(f => f.Value));
+        Console.WriteLine(paths.Where(f => f.Value <= 100_000)
+            .Sum(f => f.Value));
         // part 2 solution
         var occupiedSpace = paths["/"];
         var requiredFreeSpace = requiredSpace - (totalSpace - occupiedSpace);
         // part 2 result
-        Console.WriteLine(paths.Where(f => f.Value >= requiredFreeSpace).Min(f => f.Value));
+        Console.WriteLine(paths
+            .Where(f => f.Value >= requiredFreeSpace)
+            .Min(f => f.Value));
     }
 }
